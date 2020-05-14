@@ -26,13 +26,18 @@ class PropertyController extends  AbstractController
 
 
     /**
-     * @Route("/biens", name="property.index") 
+     * @Route("/biens", name="property.index")
+     * @param PropertyRepository $repository
      * @return Response
      */
-    public function index(): Response
+    public function index(PropertyRepository $repository): Response
     {
+       // $properties = $this->repository->findVisibleQuery();
+       // return $this->render('Property/index.html.twig', compact('properties'));
+
+        $properties = $repository->findAllVisible();
         return $this->render('Property/index.html.twig', [
-            'current_menu' => 'properties'
+            'properties' => $properties
         ]);
     }
 

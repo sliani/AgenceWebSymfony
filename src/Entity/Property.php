@@ -5,9 +5,14 @@ namespace App\Entity;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
+ * @UniqueEntity("title")
+ * @Vich\Uploadable
  */
 class Property
 {
@@ -25,6 +30,7 @@ class Property
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=6, max=255)
      */
     private $title;
 
@@ -35,6 +41,7 @@ class Property
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min=10, max=400)
      */
     private $surface;
 
@@ -75,6 +82,7 @@ class Property
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex("/^[0-9]{5}$/")
      */
     private $postal_code;
 
@@ -88,10 +96,6 @@ class Property
      */
     private $created_at;
 
-    public function __construct()
-    {
-        $this->created_at = new \DateTime(); 
-    }
 
     public function getId(): ?int
     {
@@ -268,4 +272,5 @@ class Property
 
         return $this;
     }
+
 }
